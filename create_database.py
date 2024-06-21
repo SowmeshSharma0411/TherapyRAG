@@ -9,6 +9,8 @@ import shutil
 CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
+# dont use this for now use : create_database2.py
+
 
 def main():
     generate_data_store()
@@ -50,7 +52,7 @@ def save_to_chroma(chunks: list[Document]):
 
     # Create a new DB from the documents.
     db = Chroma.from_documents(
-        chunks, OpenAIEmbeddings(openai_api_key=''), persist_directory=CHROMA_PATH
+        chunks, OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"]), persist_directory=CHROMA_PATH
     )
     db.persist()
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")

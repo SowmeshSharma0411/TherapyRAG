@@ -1,5 +1,5 @@
 import argparse
-from langchain.vectorstores.chroma import Chroma
+from langchain.vectorstores import Chroma
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -14,6 +14,7 @@ You are a therapist. Answer the questions based on the provided data in the cont
 ---
 
 Answer the question based on the above context: {question}
+Give a longer response as similar to these 3 responses by combining or paraphrasing these responses such that it sounds as human as possible. Answer in 2nd person throughout the response. Suggest possible solutions that might help the user based on the suggestions given in the 3 responses.  
 """
 
 
@@ -26,7 +27,7 @@ def main():
 
     # Prepare the DB.
     embedding_function = OpenAIEmbeddings(
-        openai_api_key='')
+        openai_api_key=os.environ["OPENAI_API_KEY"])
     db = Chroma(persist_directory=CHROMA_PATH,
                 embedding_function=embedding_function)
 
@@ -43,10 +44,12 @@ def main():
     print(prompt)
 
     model = ChatOpenAI(
-        openai_api_key='')
+        openai_api_key=os.environ["OPENAI_API_KEY"])
     response_text = model.predict(prompt)
     formatted_response = f"Response: {response_text}\n"
     print(formatted_response)
+
+    pass
 
 
 if __name__ == "__main__":
